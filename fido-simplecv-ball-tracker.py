@@ -4,8 +4,8 @@ import fido
 def GetThresholdedImage(img):
   '''Answer a thresholded image based on the color of a green tennis ball'''
   imgHSV = img.toHSV()
-  dist = img.hueDistance((38,60,212), 50, 180)
-  return img - dist
+  dist = img.hueDistance((35,150,100), 90, 90)
+  return dist.binarize()
 
 posX = 0
 posY = 0
@@ -48,28 +48,31 @@ def main():
 
     blobs = imgThresh.findBlobs()
     circles = None
-    
+
     if blobs:
-      print ' found blobs: ', len(blobs)
-      circles = blobs.filter([b.isCircle(0.35) for b in blobs])
-      if circles:
-        print ' found circles: ', len(circles)
+      #print ' found blobs: ', len(blobs)
+      #circles = blobs.filter([b.isCircle(0.6) for b in blobs])
+      #if circles:
+        #print ' found circles: ', len(circles)
         max_radius = 0
         x = 0
         y = 0
-        for c in circles:
-          if c.radius > max_radius:
-            x = c.x
-            y = c.y
-            max_radius = c.radius()
+        biggest_blob = None
+        for c in blobs:
+          if c.area > max_radius:
+            x = c.centroid()[0]
+            y = c.centroid()[1]
+            max_radius = c.area()
             area = c.area()
-            
-        imgThresh.drawCircle((x, y), max_radius, scv.Color.WHITE, min(3,max_radius))
+            biggest_blob = c
+
+        biggest_blob.drawHull()
+        #imgThresh.drawCircle((x, y), max_radius, scv.Color.GREEN, min(3,max_radius))
 		
     lastX = posX
     lastY = posY
     
-    if circles: 
+    if blobs: 
       posX = x
       posY = y
 
