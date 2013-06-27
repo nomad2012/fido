@@ -1,6 +1,7 @@
 import cv
 import fido
 import numpy as np
+from datetime import datetime
 
 def GetThresholdedImage(img):
   #returns thresholded image of the blue bottle
@@ -114,7 +115,7 @@ def main():
       posX = int(moment10 / area)
       posY = int(moment01 / area)
 
-      print 'x: ' + str(posX) + ' y: ' + str(posY) + ' area: ' + str(area) + ' head_x: ' + str(head_x) + ' neck_y: ' + str(neck_y) + ' jaw_pos: ' + str(jaw_pos)
+      print str(datetime.now()), ' x: ' + str(posX) + ' y: ' + str(posY) + ' area: ' + str(area) + ' head_x: ' + str(head_x) + ' neck_y: ' + str(neck_y) + ' jaw_pos: ' + str(jaw_pos)
       #drawing lines to track the movement of the blob
       if(lastX > 0 and lastY > 0 and posX > 0 and posY > 0):
         #cv.Circle( imgThresh, (posX, posY), maxRadius, cv.Scalar(0,0,255), 3, 8, 0 );        
